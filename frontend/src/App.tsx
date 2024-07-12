@@ -26,7 +26,7 @@ export const App = () => {
   return (
     // <ApolloProvider client={}>
     <>
-      <NavBar user={user} onLogout={handleLogout} />
+      <NavBar onLogout={handleLogout} /> 
       <main className="section">
         <Routes>
           <Route index path="/"

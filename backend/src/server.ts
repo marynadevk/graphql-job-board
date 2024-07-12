@@ -11,7 +11,6 @@ const PORT = process.env.PORT;
 const app = express();
 app.use(cors(), express.json());
 
-console.log(`Current working directory: ${process.cwd()}`);
 const typeDefs = await readFile('./schema.graphql', 'utf8');
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });

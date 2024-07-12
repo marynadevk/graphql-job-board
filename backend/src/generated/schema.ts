@@ -1,4 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { CompanyEntity, JobEntity } from '../db/types.js';
+import { ResolverContext } from '../resolvers.js';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -15,8 +17,14 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Job = {
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  title: Scalars['String']['output'];
+};
+
 export type Query = {
-  greeting?: Maybe<Scalars['String']['output']>;
+  jobs?: Maybe<Array<Job>>;
 };
 
 
@@ -91,6 +99,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Job: ResolverTypeWrapper<JobEntity>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
@@ -98,15 +108,25 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  ID: Scalars['ID']['output'];
+  Job: JobEntity;
   Query: {};
   String: Scalars['String']['output'];
 };
 
+export type JobResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Job'] = ResolversParentTypes['Job']> = {
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  greeting?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  jobs?: Resolver<Maybe<Array<ResolversTypes['Job']>>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = ResolverContext> = {
+  Job?: JobResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 
