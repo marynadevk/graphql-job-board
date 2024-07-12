@@ -1,11 +1,16 @@
 import { connection } from './connection.js';
+import { IUserEntity } from '../interfaces/index.js';
 
-const getUserTable = () => connection.table('user');
+const getUserTable = () => connection.table<IUserEntity>('user');
 
-export async function getUser(id) {
-  return await getUserTable().first().where({ id });
-}
+class UserEntity {
+  async getUser(id: string) {
+    return await getUserTable().first().where({ id });
+  }
 
-export async function getUserByEmail(email) {
-  return await getUserTable().first().where({ email });
-}
+  async getUserByEmail(email: string) {
+    return await getUserTable().first().where({ email });
+  }
+};
+
+export const userEntity = new UserEntity();

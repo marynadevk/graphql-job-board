@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import { expressjwt } from 'express-jwt';
 import jwt from 'jsonwebtoken';
-import { getUserByEmail } from './db/users.js';
+import { userEntity } from './db/users.js';
 
 const secret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 
@@ -10,9 +11,10 @@ export const authMiddleware = expressjwt({
   secret,
 });
 
-export const handleLogin = async (req, res) => {
+export const handleLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const user = await getUserByEmail(email);
+  const user = await userEntity.getUserByEmail(email);
+
   if (!user || user.password !== password) {
     res.sendStatus(401);
   } else {
