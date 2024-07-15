@@ -1,36 +1,25 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { getJob } from '../lib/graphql/queries';
+import { useJob } from '../lib/graphql/hooks';
+import { LoadingOrError } from '../components/LoadingOrError';
+import { formatDate } from '../lib/formatters';
 
 export const JobPage = () => {
   const { jobId } = useParams();
-  const [job, setJob] = useState(null);
-
-  useEffect(() => {
-    getJob(jobId).then(setJob);
-  }, [jobId]);
-  
-  if (!job) {
-    return <p>Loading...</p>;
-  }
-
+  const { job, loading, error } = useJob(jobId);
+  if (!job) return null;
+  const { title, company, description, date } = job;
+  const formattedDate = formatDate(date, 'long');
   return (
     <div>
-      <h1 className="title is-2">
-        {job.title}
-      </h1>
+      <LoadingOrError loading={loading} error={error} />
+      <h1 className="title is-2">{title}</h1>
       <h2 className="subtitle is-4">
-        <Link to={`/companies/${job.company.id}`}>
-          {job.company.name}
-        </Link>
+        <Link to={`/companies/${company.id}`}>{company.name}</Link>
       </h2>
       <div className="box">
-        <div className="block has-text-grey">
-        </div>
-        <p className="block">
-          {job.description}
-        </p>
+        <div className="block has-text-grey">Posted: {formattedDate}</div>
+        <p className="block">{description}</p>
       </div>
     </div>
   );

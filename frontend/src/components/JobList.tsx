@@ -1,7 +1,7 @@
 import { IJob } from '../interfaces/IJob';
 import { JobItem } from './JobItem';
 
-interface JobListProps {
+type JobListProps = {
   jobs: IJob[];
 }
 

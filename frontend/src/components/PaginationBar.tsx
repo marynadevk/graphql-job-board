@@ -9,6 +9,7 @@ type PaginationBarProps = {
 
 export const PaginationBar: React.FC<PaginationBarProps> = ({ currentPage, totalPages, onPageChange }) => {
   const pages = getVisiblePages(currentPage, totalPages);
+
   return (
     <nav className="pagination is-centered" role="navigation" aria-label="pagination">
       <button className="pagination-previous" aria-label="Previous page"
@@ -24,8 +25,10 @@ export const PaginationBar: React.FC<PaginationBarProps> = ({ currentPage, total
       <ul className="pagination-list">
         {pages.map((page) => (
           <li key={page}>
-            <PageButton page={page} currentPage={currentPage}
-              onClick={() => onPageChange(page as number)}
+            <PageButton 
+              page={page}
+              currentPage={currentPage}
+              onClick={() => onPageChange(Number(page))}
             />
           </li>
         ))}
