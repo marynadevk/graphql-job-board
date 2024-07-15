@@ -8,10 +8,10 @@
         "typescript-resolvers"
       ],
       "config": {
-        "contextType": "src/interfaces/IResolverContext.ts",
+        "contextType": "src/interfaces/IResolverContext#IResolverContext",
         "mappers": {
-          "Company": "src/interfaces/ICompanyEntity.ts",
-          "Job": "src/interfaces/IJobEntity.ts"
+          "Company": "src/interfaces/ICompanyEntity#ICompanyEntity",
+          "Job": "src/interfaces/IJobEntity#IJobEntity"
         },
         "skipTypename": true
       }
