@@ -1,10 +1,22 @@
 type Query {
+  companyQuery: CompanyQuery
+  jobQuery: JobQuery
+  jobsQuery: JobsQuery
+}
+
+type CompanyQuery {
   company(id: ID!): Company
+}
+
+type JobQuery {
   job(id: ID!): Job
+}
+
+type JobsQuery {
   jobs(limit: Int, offset: Int): JobSubList
 }
 
-type Mutation {
+type JobMutation {
   createJob(input: CreateJobInput!): Job
   deleteJob(id: ID!): Job
   updateJob(input: UpdateJobInput!): Job

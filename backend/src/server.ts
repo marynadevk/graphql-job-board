@@ -4,13 +4,15 @@ import { expressMiddleware as apolloMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
 import express from 'express';
 import { readFile } from 'node:fs/promises';
-import { authMiddleware, handleLogin } from './auth.js';
-import { resolvers } from './resolvers/resolvers.js';
+import { handleLogin } from './auth/auth.controller.js';
 import { companyEntity } from './db/companies.js';
 import { IResolverContext } from './interfaces/index.js';
 import { userEntity } from './db/users.js';
+import { authMiddleware } from './auth/auth.service.js';
+import { envConfig } from './config.js';
+import { CompanyQuery, Company, JobQuery, Job, JobsQuery, JobMutation } from './resolvers/index.js';
 
-const PORT = process.env.PORT || 9000;
+const PORT = envConfig.port || 9000;
 
 const app = express();
 app.use(cors(), express.json(), authMiddleware);
@@ -28,7 +30,14 @@ async function getContext({ req }): Promise<IResolverContext> {
   return context;
 }
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({ typeDefs, resolvers: {
+  CompanyQuery,
+  Company,
+  JobQuery,
+  Job,
+  JobsQuery,
+  JobMutation
+} });
 await apolloServer.start();
 app.use('/graphql', apolloMiddleware(apolloServer, { context: getContext }));
 

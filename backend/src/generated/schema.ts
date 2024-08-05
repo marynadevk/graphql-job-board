@@ -27,6 +27,15 @@ export type Company = {
   name: Scalars['String']['output'];
 };
 
+export type CompanyQuery = {
+  company?: Maybe<Company>;
+};
+
+
+export type CompanyQueryCompanyArgs = {
+  id: Scalars['ID']['input'];
+};
+
 export type CreateJobInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
@@ -40,52 +49,55 @@ export type Job = {
   title: Scalars['String']['output'];
 };
 
-export type JobSubList = {
-  items: Array<Job>;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type Mutation = {
+export type JobMutation = {
   createJob?: Maybe<Job>;
   deleteJob?: Maybe<Job>;
   updateJob?: Maybe<Job>;
 };
 
 
-export type MutationCreateJobArgs = {
+export type JobMutationCreateJobArgs = {
   input: CreateJobInput;
 };
 
 
-export type MutationDeleteJobArgs = {
+export type JobMutationDeleteJobArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type MutationUpdateJobArgs = {
+export type JobMutationUpdateJobArgs = {
   input: UpdateJobInput;
 };
 
-export type Query = {
-  company?: Maybe<Company>;
+export type JobQuery = {
   job?: Maybe<Job>;
+};
+
+
+export type JobQueryJobArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type JobSubList = {
+  items: Array<Job>;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type JobsQuery = {
   jobs?: Maybe<JobSubList>;
 };
 
 
-export type QueryCompanyArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryJobArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryJobsArgs = {
+export type JobsQueryJobsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type Query = {
+  companyQuery?: Maybe<CompanyQuery>;
+  jobQuery?: Maybe<JobQuery>;
+  jobsQuery?: Maybe<JobsQuery>;
 };
 
 export type UpdateJobInput = {
@@ -167,12 +179,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Company: ResolverTypeWrapper<ICompanyEntity>;
+  CompanyQuery: ResolverTypeWrapper<Omit<CompanyQuery, 'company'> & { company?: Maybe<ResolversTypes['Company']> }>;
   CreateJobInput: CreateJobInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Job: ResolverTypeWrapper<IJobEntity>;
+  JobMutation: ResolverTypeWrapper<Omit<JobMutation, 'createJob' | 'deleteJob' | 'updateJob'> & { createJob?: Maybe<ResolversTypes['Job']>, deleteJob?: Maybe<ResolversTypes['Job']>, updateJob?: Maybe<ResolversTypes['Job']> }>;
+  JobQuery: ResolverTypeWrapper<Omit<JobQuery, 'job'> & { job?: Maybe<ResolversTypes['Job']> }>;
   JobSubList: ResolverTypeWrapper<Omit<JobSubList, 'items'> & { items: Array<ResolversTypes['Job']> }>;
-  Mutation: ResolverTypeWrapper<{}>;
+  JobsQuery: ResolverTypeWrapper<Omit<JobsQuery, 'jobs'> & { jobs?: Maybe<ResolversTypes['JobSubList']> }>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateJobInput: UpdateJobInput;
@@ -182,12 +197,15 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Company: ICompanyEntity;
+  CompanyQuery: Omit<CompanyQuery, 'company'> & { company?: Maybe<ResolversParentTypes['Company']> };
   CreateJobInput: CreateJobInput;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Job: IJobEntity;
+  JobMutation: Omit<JobMutation, 'createJob' | 'deleteJob' | 'updateJob'> & { createJob?: Maybe<ResolversParentTypes['Job']>, deleteJob?: Maybe<ResolversParentTypes['Job']>, updateJob?: Maybe<ResolversParentTypes['Job']> };
+  JobQuery: Omit<JobQuery, 'job'> & { job?: Maybe<ResolversParentTypes['Job']> };
   JobSubList: Omit<JobSubList, 'items'> & { items: Array<ResolversParentTypes['Job']> };
-  Mutation: {};
+  JobsQuery: Omit<JobsQuery, 'jobs'> & { jobs?: Maybe<ResolversParentTypes['JobSubList']> };
   Query: {};
   String: Scalars['String']['output'];
   UpdateJobInput: UpdateJobInput;
@@ -201,6 +219,11 @@ export type CompanyResolvers<ContextType = IResolverContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CompanyQueryResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['CompanyQuery'] = ResolversParentTypes['CompanyQuery']> = {
+  company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<CompanyQueryCompanyArgs, 'id'>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type JobResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['Job'] = ResolversParentTypes['Job']> = {
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>;
   date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -210,29 +233,43 @@ export type JobResolvers<ContextType = IResolverContext, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type JobMutationResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['JobMutation'] = ResolversParentTypes['JobMutation']> = {
+  createJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<JobMutationCreateJobArgs, 'input'>>;
+  deleteJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<JobMutationDeleteJobArgs, 'id'>>;
+  updateJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<JobMutationUpdateJobArgs, 'input'>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type JobQueryResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['JobQuery'] = ResolversParentTypes['JobQuery']> = {
+  job?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<JobQueryJobArgs, 'id'>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type JobSubListResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['JobSubList'] = ResolversParentTypes['JobSubList']> = {
   items?: Resolver<Array<ResolversTypes['Job']>, ParentType, ContextType>;
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationCreateJobArgs, 'input'>>;
-  deleteJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationDeleteJobArgs, 'id'>>;
-  updateJob?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<MutationUpdateJobArgs, 'input'>>;
+export type JobsQueryResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['JobsQuery'] = ResolversParentTypes['JobsQuery']> = {
+  jobs?: Resolver<Maybe<ResolversTypes['JobSubList']>, ParentType, ContextType, Partial<JobsQueryJobsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = IResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
-  job?: Resolver<Maybe<ResolversTypes['Job']>, ParentType, ContextType, RequireFields<QueryJobArgs, 'id'>>;
-  jobs?: Resolver<Maybe<ResolversTypes['JobSubList']>, ParentType, ContextType, Partial<QueryJobsArgs>>;
+  companyQuery?: Resolver<Maybe<ResolversTypes['CompanyQuery']>, ParentType, ContextType>;
+  jobQuery?: Resolver<Maybe<ResolversTypes['JobQuery']>, ParentType, ContextType>;
+  jobsQuery?: Resolver<Maybe<ResolversTypes['JobsQuery']>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = IResolverContext> = {
   Company?: CompanyResolvers<ContextType>;
+  CompanyQuery?: CompanyQueryResolvers<ContextType>;
   Job?: JobResolvers<ContextType>;
+  JobMutation?: JobMutationResolvers<ContextType>;
+  JobQuery?: JobQueryResolvers<ContextType>;
   JobSubList?: JobSubListResolvers<ContextType>;
-  Mutation?: MutationResolvers<ContextType>;
+  JobsQuery?: JobsQueryResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 
