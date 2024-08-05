@@ -24,7 +24,7 @@ cd blogapp
 ```
 2. **Install dependencies for both frontend and backend:**
 ```sh
-npm install
+npm ci
 ```
 3. **Create a .env files based on the provided .env.example**
 
